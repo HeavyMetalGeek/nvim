@@ -1,5 +1,4 @@
 vim.cmd [[packadd packer.vim]]
-print("hello from init")
 
 return require('packer').startup(function()
     use 'wbthomason/packer.nvim'
