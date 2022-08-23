@@ -56,3 +56,5 @@ cmp.setup({
     { name = 'buffer' },
   },
 })
+
+vim.g.rustfmt_autosave = 1
