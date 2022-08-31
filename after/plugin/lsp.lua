@@ -29,7 +29,8 @@ cmp.setup({
   -- Enable LSP snippets
   snippet = {
     expand = function(args)
-        vim.fn["vsnip#anonymous"](args.body)
+        -- vim.fn["vsnip#anonymous"](args.body)
+        require("luasnip").lsp_expand(args.body)
     end,
   },
   mapping = {
@@ -56,3 +57,5 @@ cmp.setup({
     { name = 'buffer' },
   },
 })
+
+vim.g.rustfmt_autosave = 1
