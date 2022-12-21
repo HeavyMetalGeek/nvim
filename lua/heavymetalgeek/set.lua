@@ -26,7 +26,4 @@ vim.opt.undofile = true
 -- Don't pass messages to |ins-completion-menu|
 vim.opt.shortmess:append("c")
 
--- Leader character
-vim.g.mapleader = " "
-
 vim.opt.updatetime = 50

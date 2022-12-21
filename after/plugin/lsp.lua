@@ -1,63 +1,75 @@
-local nvim_lsp = require("lspconfig")
+local lsp = require("lsp-zero")
 
-local opts = {
-    tools = { -- rust-tools options
-        autoSetHints = true,
-        --hover_with_actions = true,
+lsp.preset("recommended")
 
-        inlay_hints = {
-            show_parameter_hints = false,
-            parameter_hints_prefix = "",
-            other_hints_prefix = "",
-        },
-    },
+lsp.ensure_installed({
+    "tsserver",
+    "eslint",
+    "sumneko_lua",
+    "rust_analyzer"
+})
 
-    server = {
-        settings = {
-            ["rust-analyzer"] = {
-                checkOnSave = {
-                    command = "clippy"
-                },
+-- Fix undefined global 'vim'
+lsp.configure("sumneko_lua", {
+    settings = {
+        Lua = {
+            diagnostics = {
+                globals = { "vim" }
             }
         }
-    },
-}
-
-require('rust-tools').setup(opts)
+    }
+})
 
 local cmp = require("cmp")
-cmp.setup({
-  -- Enable LSP snippets
-  snippet = {
-    expand = function(args)
-        -- vim.fn["vsnip#anonymous"](args.body)
-        require("luasnip").lsp_expand(args.body)
-    end,
-  },
-  mapping = {
-    ['<C-p>'] = cmp.mapping.select_prev_item(),
-    ['<C-n>'] = cmp.mapping.select_next_item(),
-    -- Add tab support
-    ['<S-Tab>'] = cmp.mapping.select_prev_item(),
-    --['<Tab>'] = cmp.mapping.select_next_item(),
-    ['<C-d>'] = cmp.mapping.scroll_docs(-4),
-    ['<C-f>'] = cmp.mapping.scroll_docs(4),
-    ['<C-Space>'] = cmp.mapping.complete(),
-    ['<C-e>'] = cmp.mapping.close(),
-    --['<CR>'] = cmp.mapping.confirm({
+local cmp_select = { behavior = cmp.SelectBehavior.Select }
+local cmp_mappings = lsp.defaults.cmp_mappings({
+    ['<C-p>'] = cmp.mapping.select_prev_item(cmp_select),
+    ['<C-n>'] = cmp.mapping.select_next_item(cmp_select),
     ['<Tab>'] = cmp.mapping.confirm({
       behavior = cmp.ConfirmBehavior.Insert,
       select = true,
-    })
-  },
-
-  -- Installed sources
-  sources = {
-    { name = 'nvim_lsp' },
-    { name = 'vsnip' },
-    { name = 'path' },
-    { name = 'buffer' },
-  },
+    }),
+    ['<C-Space>'] = cmp.mapping.complete(),
 })
 
-vim.g.rustfmt_autosave = 1
+lsp.setup_nvim_cmp({
+    mapping = cmp_mappings
+})
+
+lsp.set_preferences({
+    suggest_lsp_servers = false,
+    sign_icons = {
+        error = 'E',
+        warn = 'W',
+        hint = 'H',
+        info = 'I',
+    }
+})
+
+lsp.on_attach(function(client, bufnr)
+    local opts = { buffer = bufnr, remap = false }
+
+    if client.name == "eslint" then
+        vim.cmd.LspStop("eslint")
+        return
+
+    end
+
+    vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
+    vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
+    vim.keymap.set("n", "<leader>vws", vim.lsp.buf.workspace_symbol, opts)
+    vim.keymap.set("n", "<leader>vd", vim.diagnostic.open_float, opts)
+    vim.keymap.set("n", "[d", vim.diagnostic.goto_next, opts)
+    vim.keymap.set("n", "]d", vim.diagnostic.goto_prev, opts)
+    vim.keymap.set("n", "<leader>vca", vim.lsp.buf.code_action, opts)
+    vim.keymap.set("n", "<leader>vrr", vim.lsp.buf.references, opts)
+    vim.keymap.set("n", "<leader>vrn", vim.lsp.buf.rename, opts)
+    vim.keymap.set("i", "<C-h>", vim.lsp.buf.signature_help, opts)
+end)
+
+lsp.setup()
+
+vim.diagnostic.config({
+    virtual_text = true,
+})
+-- vim.g.rustfmt_autosave = 1
