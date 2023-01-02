@@ -38,7 +38,7 @@ return require('packer').startup(function(use)
     }
     use 'BurntSushi/ripgrep'
     use 'itchyny/lightline.vim'
-    -- use 'rust-lang/rust.vim'
+    use 'rust-lang/rust.vim'
     -- use 'simrat39/rust-tools.nvim'
     -- use 'dense-analysis/ale'
 end)

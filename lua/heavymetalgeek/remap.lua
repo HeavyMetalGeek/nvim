@@ -14,7 +14,7 @@ vim.keymap.set("n", "<leader>Y", [["+Y]])
 -- vnoremap("<leader>v", "\"+p")
 -- nnoremap("<leader>v", "\"+p")
 
--- join current line with line below, keeping cursor in same position 
+-- join current line with line below, keeping cursor in same position
 -- nnoremap("J", "mzJ`z")
 
 -- replaces highlighted text with buffer text
@@ -26,4 +26,7 @@ vim.keymap.set("n", "<C-u>", "<C-u>zz")
 vim.keymap.set("n", "<C-d>", "<C-d>zz")
 vim.keymap.set("n", "N", "Nzzzv")
 vim.keymap.set("n", "n", "nzzzv")
+
+-- search word under cursor, without going to next instance
+vim.keymap.set("n", "*", "*N")
 

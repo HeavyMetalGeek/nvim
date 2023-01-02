@@ -4,7 +4,7 @@ vim.opt.shiftwidth = 4
 vim.opt.expandtab = true
 vim.opt.smartindent = true
 vim.opt.scrolloff = 8
-vim.opt.signcolumn = "yes" 
+vim.opt.signcolumn = "yes"
 vim.opt.colorcolumn = "100"
 vim.opt.guicursor = "n-v-c-sm:block,i-ci-ve:ver25,r-cr-o:hor20"
 
@@ -15,6 +15,7 @@ vim.opt.incsearch = true
 vim.opt.hlsearch = false
 vim.opt.hidden = true
 vim.opt.wrap = false
+
 
 vim.opt.termguicolors = true
 vim.opt.errorbells = false
