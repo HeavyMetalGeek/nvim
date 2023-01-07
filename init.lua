@@ -1,1 +1,1 @@
-require("heavymetalgeek")
+require("config.lazy")
