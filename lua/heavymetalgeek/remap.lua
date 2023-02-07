@@ -9,6 +9,7 @@ vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv")
 vim.keymap.set("n", "Y", "yg$")
 
 -- copy/paste from clipboard
+-- need to install xclip if using X11
 vim.keymap.set({"n", "v"}, "<leader>y", [["+y]])
 vim.keymap.set("n", "<leader>Y", [["+Y]])
 -- vnoremap("<leader>v", "\"+p")

@@ -1,4 +1,5 @@
 local lsp = require("lsp-zero")
+local nvim_lsp = require("lspconfig")
 
 lsp.preset("recommended")
 
@@ -6,6 +7,9 @@ lsp.ensure_installed({
     --"tsserver",
     --"eslint",
     --"sumneko_lua",
+    "denols",
+    "neocmake",
+    "clangd",
     "rust_analyzer"
 })
 
@@ -20,15 +24,32 @@ lsp.configure("sumneko_lua", {
     }
 })
 
+vim.g.markdown_fenced_languages = { "ts=typescript" }
+lsp.configure("denols", {
+    on_attach = function(client, bufnr)
+        print('denols running...')
+    end,
+    init_options = { lint = true, enable = true },
+    root_dir = nvim_lsp.util.root_pattern("deno.json"),
+})
+lsp.configure("tsserver", {
+    on_attach = function(client, bufnr)
+        print('tsserver running...')
+    end,
+    root_dir = nvim_lsp.util.root_pattern("package.json"),
+    init_options = { lint = true },
+})
+
 local cmp = require("cmp")
 local cmp_select = { behavior = cmp.SelectBehavior.Select }
 local cmp_mappings = lsp.defaults.cmp_mappings({
     ['<C-p>'] = cmp.mapping.select_prev_item(cmp_select),
     ['<C-n>'] = cmp.mapping.select_next_item(cmp_select),
     ['<Tab>'] = cmp.mapping.confirm({
-      behavior = cmp.ConfirmBehavior.Insert,
-      select = true,
+        behavior = cmp.ConfirmBehavior.Insert,
+        select = true,
     }),
+    ['<CR>'] = cmp.mapping.abort(),
     ['<C-Space>'] = cmp.mapping.complete(),
 })
 
