@@ -4,11 +4,10 @@ local nvim_lsp = require("lspconfig")
 lsp.preset("recommended")
 
 lsp.ensure_installed({
-    --"tsserver",
+    "tsserver",
     --"eslint",
     --"sumneko_lua",
     "denols",
-    "neocmake",
     "clangd",
     "rust_analyzer"
 })
@@ -29,7 +28,7 @@ lsp.configure("denols", {
     on_attach = function(client, bufnr)
         print('denols running...')
     end,
-    init_options = { lint = true, enable = true },
+    init_options = { enable = true, lint = true },
     root_dir = nvim_lsp.util.root_pattern("deno.json"),
 })
 lsp.configure("tsserver", {
@@ -38,6 +37,11 @@ lsp.configure("tsserver", {
     end,
     root_dir = nvim_lsp.util.root_pattern("package.json"),
     init_options = { lint = true },
+})
+lsp.configure("rust_analyzer", {
+    on_attach = function(client, bufnr)
+        print('rust_analyzer running...')
+    end
 })
 
 local cmp = require("cmp")

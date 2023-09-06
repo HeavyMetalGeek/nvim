@@ -31,3 +31,4 @@ vim.keymap.set("n", "n", "nzzzv")
 -- search word under cursor, without going to next instance
 vim.keymap.set("n", "*", "*N")
 
+
