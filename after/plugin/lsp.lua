@@ -41,7 +41,12 @@ lsp.configure("tsserver", {
 lsp.configure("rust_analyzer", {
     on_attach = function(client, bufnr)
         print('rust_analyzer running...')
-    end
+    end,
+    settings = {
+        ["rust-analyzer"] = {
+            checkOnSave = { command = "clippy" },
+        }
+    }
 })
 
 local cmp = require("cmp")
