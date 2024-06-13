@@ -46,7 +46,13 @@ lsp.configure("rust_analyzer", {
         ["rust-analyzer"] = {
             checkOnSave = { command = "clippy" },
         }
-    }
+    },
+})
+lsp.configure("clangd", {
+    on_attach = function(client, bufnr)
+        print('clangd running...')
+    end,
+    cmd = { "clangd", "--background-index", "--clang-tidy" },
 })
 
 local cmp = require("cmp")
